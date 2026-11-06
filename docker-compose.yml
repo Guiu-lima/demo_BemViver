@@ -1,0 +1,19 @@
+services:
+  bemviver:
+    build: .
+    image: bemviver:latest
+    container_name: bemviver
+    restart: unless-stopped
+    ports:
+      # A porta do host precisa ser 3000: o front-end chama a API em <host>:3000
+      # (meta "api-base"). Por padrão só aceita conexões da própria máquina.
+      - "${BIND_ADDRESS:-127.0.0.1}:3000:3000"
+    environment:
+      # Ambos juntos ou ambos vazios (o servidor exige isso). Senha >= 12 caracteres.
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+    volumes:
+      - bemviver-dados:/data
+
+volumes:
+  bemviver-dados:
